@@ -44,6 +44,12 @@ function addItem(e) {
     editBtn.appendChild(document.createTextNode("Edit"));
     li.append(editBtn);
 
+    // add description
+    let itemDesc = document.createElement("p");
+    itemDesc.appendChild(document.createTextNode(form.children[1].value));
+    itemDesc.style.color = "grey";
+    li.appendChild(itemDesc);
+
 }
 
 // Remove item
@@ -60,17 +66,20 @@ function removeItem(e) {
 function filterItems(e) {
     // convert text to lowercase
     var text = e.target.value.toLowerCase();
-    // Get lis
+    // Get list
     var items = itemList.getElementsByTagName('li');
     // Convert to an array
     Array.from(items).forEach(function (item) {
         var itemName = item.firstChild.textContent;
-        if (itemName.toLowerCase().indexOf(text) != -1) {
+        let desc = item.lastElementChild.textContent;
+        if (itemName.toLowerCase().indexOf(text) != -1 || desc.toLowerCase().indexOf(text) != -1) {
             item.style.display = 'block';
         } else {
             item.style.display = 'none';
         }
     });
+
+
 }
 /*
 let editBtn = document.createElement("button");
@@ -90,3 +99,20 @@ liList[1].append(editBtn);
 liList[2].append(editBtn);
 liList[3].append(editBtn);
 */
+
+// Add description for items
+for (let i = 0; i < liList.length; i++)
+{
+    let itemDesc = document.createElement("p");
+    itemDesc.appendChild(document.createTextNode(`Item Description for Item ${i + 1}`));
+    itemDesc.style.color = "grey";
+    liList[i].appendChild(itemDesc);
+}
+
+let descInput = document.createElement("input");
+descInput.type = "text";
+descInput.id = "desc";
+descInput.className = "form-control mr-2";
+descInput.placeholder = "Enter description..";
+form.insertBefore(descInput, form.children[1]);
+form.children[0].placeholder = "Enter item name";
