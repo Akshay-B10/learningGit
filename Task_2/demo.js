@@ -1,41 +1,55 @@
-/*
-const header = document.getElementById("main-header");
-header.style.borderBottom = "solid 3px black";
-const formTitle = document.getElementById("main").firstElementChild;
-formTitle.innerHTML = "<b>Add Items</b>";
-formTitle.style.color = "green";
-*/
-// console.log("Hello World")
-/*
-const liGrp = document.getElementsByClassName("list-group-item");
-liGrp[2].style.backgroundColor = "green";
-for (let i = 0; i < liGrp.length; i++)
-{
-    liGrp[i].style.fontWeight = "bold";
-}
-const lastLi = document.getElementsByClassName("list-not-same");
+// Parent node
+const itemLi = document.querySelector("#items");
+itemLi.parentNode.style.backgroundColor = "lightgrey";
+itemLi.parentElement.style.fontStyle = "italic";
+// parentNode and parentElement is giving same result
 
-// lastLi is array of Node elements even if there is only one element; Imp to remember
+//Child node
+console.log(itemLi.childNodes);
+// gives array of nodes; text representing gap in html is present as element
 
-const li = document.getElementsByTagName("li");
-lastLi[0].style.backgroundColor = "purple";
-li[4].style.color = "white";
-*/
+console.log(itemLi.children);
+// gives array of nodes; always use children method
+itemLi.children[2].innerText = "3rd Element";
 
-// Using querySelector
-const secLi = document.querySelector("li:nth-child(2)");
-secLi.style.backgroundColor = "green";
+console.log(itemLi.firstChild);
+// similar child node it gives text; if gap is present in html
 
-const thirdLi = document.querySelector(".list-group-item:nth-child(3)");
-thirdLi.style.display = "none";
+itemLi.firstElementChild.style.fontFamily = "cursive";
+// It is similar to children; both firstChild and firstElement gives single node
 
-// Using querySelectorAll
-const liGrp = document.querySelectorAll(".list-group-item");
-liGrp[1].style.color = "lightgreen";
+// lastChild and lastElementChild
+console.log(itemLi.lastChild);
+itemLi.lastElementChild.textContent = "I am last element child";
 
-const oddEle = document.querySelectorAll("li:nth-child(odd)");
-for (let i = 0; i < oddEle.length; i++)
-{
-    oddEle[i].style.backgroundColor = "green";
-    oddEle[i].style.color = "white";
-}
+// nextSibling and nextElementSibling
+console.log(itemLi.nextSibling);
+console.log(itemLi.nextElementSibling);
+// if no next element sibling is not present; null will be the output
+itemLi.children[3].nextElementSibling.className = "list-group-item";
+
+// previousSibling and previousElementSibling
+console.log(itemLi.previousSibling);
+itemLi.previousElementSibling.style.color = "darkgreen";
+// create div
+const div = document.createElement("div");
+// add attribute
+div.setAttribute("title", "Hello");
+// create text node
+const textNode = document.createTextNode("HELLo word");
+// add text node
+div.appendChild(textNode);
+console.log(div);
+
+// add div tag before item lister
+const container = document.querySelector("header .container");
+console.log(container);
+const header = document.querySelector("#header-title");
+console.log(header);
+container.insertBefore(div, header);
+
+// add li tag
+const liTag = document.createElement("li");
+liTag.className = "list-group-item";
+liTag.appendChild(document.createTextNode("HELLo word"));
+itemLi.insertBefore(liTag, itemLi.firstElementChild);
