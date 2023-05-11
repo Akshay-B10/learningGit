@@ -27,8 +27,32 @@ btn.addEventListener("click", e => {
         // Displaying users
         const li = document.createElement("li");
         li.className = "list-group-item";
+
+        // to access local storage using key
+        li.setAttribute("value", email.value);
         li.appendChild(document.createTextNode(`Name: ${name.value}, Email: ${email.value}, Phone: ${phone.value}, Date: ${date.value}, Time: ${time.value}`));
+
+        // Add Delete button
+        const delBtn = document.createElement("input");
+        delBtn.setAttribute("type", "button");
+        delBtn.setAttribute("value", "Delete");
+        delBtn.className = "btn btn-danger m-2";
+        li.appendChild(delBtn);
         ul.appendChild(li);
     }
 
 })
+
+// Delete User Details from ui and local storage
+ul.addEventListener("click", delUser);
+
+function delUser(e){
+    if (e.target.classList.contains('btn')) {
+        if (confirm('Are You Sure?')) {
+            let li = e.target.parentElement;
+            let key = li.getAttribute("value");
+            localStorage.removeItem(key);
+            ul.removeChild(li);
+        }
+    }
+}
