@@ -18,22 +18,25 @@ ul.children[1].style.color = "green"
 // const myForm = document.querySelector("form");
 const btn = document.querySelector(".btn");
 btn.addEventListener("click", e =>{
-    // e.preventDefault();
-    const Name = document.querySelector("#name");
+    e.preventDefault();
+    const name = document.querySelector("#name");
     const email = document.querySelector("#email");
     const phone = document.querySelector("#phone");
     const date = document.querySelector("#date");
     const time = document.querySelector("#time");
-    if (Name.value == "" || email.value == "" || phone.value == "" || date.value == "" || time.value == "")
+    if (name.value == "" || email.value == "" || phone.value == "" || date.value == "" || time.value == "")
     {
         alert("Please fill required details");
     } else
     {
         document.querySelector(".btn").style.background = "red";
-        console.log(Name.value);
-        console.log(email.value);
-        console.log(phone.value);
-        console.log(date.value, time.value);
+        const userDetails = {};
+        userDetails.Name = name.value;
+        userDetails.Email = email.value;
+        userDetails.Phone = phone.value;
+        userDetails.Date = date.value;
+        userDetails.Time = time.value;
+        localStorage.setItem(email.value, JSON.stringify(userDetails));
     }
 
 })
