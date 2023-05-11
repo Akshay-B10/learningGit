@@ -32,11 +32,18 @@ btn.addEventListener("click", e => {
         li.setAttribute("value", email.value);
         li.appendChild(document.createTextNode(`Name: ${name.value}, Email: ${email.value}, Phone: ${phone.value}, Date: ${date.value}, Time: ${time.value}`));
 
+        // Add Edit button
+        const editBtn = document.createElement("input");
+        editBtn.setAttribute("type", "button");
+        editBtn.setAttribute("value", "Edit");
+        editBtn.className = "btn btn-outline-primary mx-2";
+        li.appendChild(editBtn);
+
         // Add Delete button
         const delBtn = document.createElement("input");
         delBtn.setAttribute("type", "button");
         delBtn.setAttribute("value", "Delete");
-        delBtn.className = "btn btn-danger m-2";
+        delBtn.className = "btn btn-danger";
         li.appendChild(delBtn);
         ul.appendChild(li);
     }
@@ -46,13 +53,33 @@ btn.addEventListener("click", e => {
 // Delete User Details from ui and local storage
 ul.addEventListener("click", delUser);
 
+// Edit User Details
+ul.addEventListener("click", editDetails);
+
+// Function to delete details
 function delUser(e){
-    if (e.target.classList.contains('btn')) {
+    if (e.target.classList.contains('btn-danger')) {
         if (confirm('Are You Sure?')) {
             let li = e.target.parentElement;
             let key = li.getAttribute("value");
             localStorage.removeItem(key);
             ul.removeChild(li);
         }
+    }
+}
+
+// Function to edit details
+function editDetails(e){
+    if (e.target.classList.contains("btn-outline-primary")){
+        let li = e.target.parentElement;
+        let key = li.getAttribute("value");
+        let myDetails = JSON.parse(localStorage.getItem(key));
+        document.querySelector("#name").value = myDetails.Name;
+        document.querySelector("#email").value = myDetails.Email;
+        document.querySelector("#phone").value = myDetails.Phone;
+        document.querySelector("#date").value = myDetails.Date;
+        document.querySelector("#time").value = myDetails.Time;
+        localStorage.removeItem(key);
+        li.parentElement.removeChild(li);
     }
 }
