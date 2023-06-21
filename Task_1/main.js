@@ -29,6 +29,8 @@ btn.addEventListener("click", e => {
             .then((res) => console.log(res))
             .catch((err) => console.log(err));
 
+        displayDetails(userDetails);
+        /*
         // Displaying users
         const li = document.createElement("li");
         li.className = "list-group-item";
@@ -42,17 +44,18 @@ btn.addEventListener("click", e => {
         // Add Edit button
         const editBtn = document.createElement("input");
         editBtn.setAttribute("type", "button");
-        // editBtn.setAttribute("value", "Edit");
+        editBtn.setAttribute("value", "Edit");
         editBtn.className = "btn btn-outline-primary mx-2";
         li.appendChild(editBtn);
 
         // Add Delete button
         const delBtn = document.createElement("input");
         delBtn.setAttribute("type", "button");
-        // delBtn.setAttribute("value", "Delete");
+        delBtn.setAttribute("value", "Delete");
         delBtn.className = "btn btn-danger";
         li.appendChild(delBtn);
         ul.appendChild(li);
+        */
     }
 
 })
@@ -63,8 +66,11 @@ ul.addEventListener("click", delUser);
 // Edit User Details
 ul.addEventListener("click", editDetails);
 
+// Event Listener for getting data when user reloads page
+window.addEventListener("DOMContentLoaded", getStoredData);
+
 // Function to delete details
-function delUser(e){
+function delUser(e) {
     if (e.target.classList.contains('btn-danger')) {
         if (confirm('Are You Sure?')) {
             let li = e.target.parentElement;
@@ -76,8 +82,8 @@ function delUser(e){
 }
 
 // Function to edit details
-function editDetails(e){
-    if (e.target.classList.contains("btn-outline-primary")){
+function editDetails(e) {
+    if (e.target.classList.contains("btn-outline-primary")) {
         let li = e.target.parentElement;
         let key = li.getAttribute("value");
         let myDetails = JSON.parse(localStorage.getItem(key));
@@ -89,4 +95,45 @@ function editDetails(e){
         localStorage.removeItem(key);
         li.parentElement.removeChild(li);
     }
+}
+
+//Function to Display Details
+function displayDetails(userDetails) {
+    // Displaying users
+    const li = document.createElement("li");
+    li.className = "list-group-item";
+
+    // to access local storage using key
+    //li.setAttribute("value", email.value);
+    // since we are not storing in local storage; there's no need to set value as email id.
+
+    li.appendChild(document.createTextNode(`Name: ${userDetails.Name}, Email: ${userDetails.Email}, Phone: ${userDetails.Phone}, Date: ${userDetails.Date}, Time: ${userDetails.Time}`));
+
+    // Add Edit button
+    const editBtn = document.createElement("input");
+    editBtn.setAttribute("type", "button");
+    editBtn.setAttribute("value", "Edit");
+    editBtn.className = "btn btn-outline-primary mx-2";
+    li.appendChild(editBtn);
+
+    // Add Delete button
+    const delBtn = document.createElement("input");
+    delBtn.setAttribute("type", "button");
+    delBtn.setAttribute("value", "Delete");
+    delBtn.className = "btn btn-danger";
+    li.appendChild(delBtn);
+    ul.appendChild(li);
+}
+
+// Function to get stored Data
+function getStoredData(){
+    axios
+        .get("https://crudcrud.com/api/061cb24afc7a46f5890b32a6f353aa7b/appointmentData")
+        .then((res) => {
+            console.log(res);
+            for (let i = 0; i < res.data.length; i++){
+                displayDetails(res.data[i]);
+            }
+        })
+        .catch((err) => console.log(err));
 }
