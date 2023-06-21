@@ -22,27 +22,34 @@ btn.addEventListener("click", e => {
         userDetails.Phone = phone.value;
         userDetails.Date = date.value;
         userDetails.Time = time.value;
-        localStorage.setItem(email.value, JSON.stringify(userDetails));
+        // localStorage.setItem(email.value, JSON.stringify(userDetails));
+        // Storing data in cloud server (Crudcrud.com server);
+        axios
+            .post("https://crudcrud.com/api/061cb24afc7a46f5890b32a6f353aa7b/appointmentData", userDetails)
+            .then((res) => console.log(res))
+            .catch((err) => console.log(err));
 
         // Displaying users
         const li = document.createElement("li");
         li.className = "list-group-item";
 
         // to access local storage using key
-        li.setAttribute("value", email.value);
+        //li.setAttribute("value", email.value);
+        // since we are not storing in local storage; there's no need to set value as email id.
+
         li.appendChild(document.createTextNode(`Name: ${name.value}, Email: ${email.value}, Phone: ${phone.value}, Date: ${date.value}, Time: ${time.value}`));
 
         // Add Edit button
         const editBtn = document.createElement("input");
         editBtn.setAttribute("type", "button");
-        editBtn.setAttribute("value", "Edit");
+        // editBtn.setAttribute("value", "Edit");
         editBtn.className = "btn btn-outline-primary mx-2";
         li.appendChild(editBtn);
 
         // Add Delete button
         const delBtn = document.createElement("input");
         delBtn.setAttribute("type", "button");
-        delBtn.setAttribute("value", "Delete");
+        // delBtn.setAttribute("value", "Delete");
         delBtn.className = "btn btn-danger";
         li.appendChild(delBtn);
         ul.appendChild(li);
