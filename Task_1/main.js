@@ -26,10 +26,13 @@ btn.addEventListener("click", e => {
         // Storing data in cloud server (Crudcrud.com server);
         axios
             .post("https://crudcrud.com/api/061cb24afc7a46f5890b32a6f353aa7b/appointmentData", userDetails)
-            .then((res) => console.log(res))
+            .then((res) => {
+                console.log(res);
+                userDetails._id = res.data._id;
+                displayDetails(userDetails);
+            })
             .catch((err) => console.log(err));
-
-        displayDetails(userDetails);
+        // displayDetails(userDetails);
         /*
         // Displaying users
         const li = document.createElement("li");
@@ -37,7 +40,6 @@ btn.addEventListener("click", e => {
 
         // to access local storage using key
         //li.setAttribute("value", email.value);
-        // since we are not storing in local storage; there's no need to set value as email id.
 
         li.appendChild(document.createTextNode(`Name: ${name.value}, Email: ${email.value}, Phone: ${phone.value}, Date: ${date.value}, Time: ${time.value}`));
 
@@ -75,7 +77,11 @@ function delUser(e) {
         if (confirm('Are You Sure?')) {
             let li = e.target.parentElement;
             let key = li.getAttribute("value");
-            localStorage.removeItem(key);
+            // localStorage.removeItem(key);
+            axios
+                .delete(`https://crudcrud.com/api/061cb24afc7a46f5890b32a6f353aa7b/appointmentData/${key}`)
+                .then((res) => console.log(res))
+                .catch((err) => console.log(err));
             ul.removeChild(li);
         }
     }
@@ -103,10 +109,8 @@ function displayDetails(userDetails) {
     const li = document.createElement("li");
     li.className = "list-group-item";
 
-    // to access local storage using key
-    //li.setAttribute("value", email.value);
-    // since we are not storing in local storage; there's no need to set value as email id.
-
+    // to access cloud storage using key
+    li.setAttribute("value", userDetails._id);
     li.appendChild(document.createTextNode(`Name: ${userDetails.Name}, Email: ${userDetails.Email}, Phone: ${userDetails.Phone}, Date: ${userDetails.Date}, Time: ${userDetails.Time}`));
 
     // Add Edit button
@@ -126,12 +130,12 @@ function displayDetails(userDetails) {
 }
 
 // Function to get stored Data
-function getStoredData(){
+function getStoredData() {
     axios
         .get("https://crudcrud.com/api/061cb24afc7a46f5890b32a6f353aa7b/appointmentData")
         .then((res) => {
             console.log(res);
-            for (let i = 0; i < res.data.length; i++){
+            for (let i = 0; i < res.data.length; i++) {
                 displayDetails(res.data[i]);
             }
         })
