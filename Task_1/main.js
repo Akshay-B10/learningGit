@@ -4,7 +4,9 @@ ul.className = "list-group";
 containerDiv.appendChild(ul);
 
 const btn = document.querySelector(".btn");
-btn.addEventListener("click", e => {
+btn.addEventListener("click", onSubmit);
+
+function onSubmit(e) {
     e.preventDefault();
     const name = document.querySelector("#name");
     const email = document.querySelector("#email");
@@ -60,7 +62,7 @@ btn.addEventListener("click", e => {
         */
     }
 
-})
+}
 
 // Delete User Details from ui and local storage
 ul.addEventListener("click", delUser);
@@ -92,13 +94,22 @@ function editDetails(e) {
     if (e.target.classList.contains("btn-outline-primary")) {
         let li = e.target.parentElement;
         let key = li.getAttribute("value");
-        let myDetails = JSON.parse(localStorage.getItem(key));
-        document.querySelector("#name").value = myDetails.Name;
-        document.querySelector("#email").value = myDetails.Email;
-        document.querySelector("#phone").value = myDetails.Phone;
-        document.querySelector("#date").value = myDetails.Date;
-        document.querySelector("#time").value = myDetails.Time;
-        localStorage.removeItem(key);
+        // let myDetails = JSON.parse(localStorage.getItem(key));
+        axios
+            .get(`https://crudcrud.com/api/061cb24afc7a46f5890b32a6f353aa7b/appointmentData/${key}`)
+            .then((res) => {
+                document.querySelector("#name").value = res.data.Name;
+                document.querySelector("#email").value = res.data.Email;
+                document.querySelector("#phone").value = res.data.Phone;
+                document.querySelector("#date").value = res.data.Date;
+                document.querySelector("#time").value = res.data.Time;
+                axios
+                    .delete(`https://crudcrud.com/api/061cb24afc7a46f5890b32a6f353aa7b/appointmentData/${key}`)
+                    .then((res) => console.log(res))
+                    .catch((err) => console.log(err));
+            })
+            .catch((err) => console.log(err));
+        // localStorage.removeItem(key);
         li.parentElement.removeChild(li);
     }
 }
