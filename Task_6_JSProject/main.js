@@ -47,7 +47,7 @@ function addTodo(e) {
         todoDetails.Status = false;
         // displayTodoPending(todoDetails);
         axios
-            .post("https://crudcrud.com/api/061cb24afc7a46f5890b32a6f353aa7b/todoApp", todoDetails)
+            .post("https://crudcrud.com/api/122a27efa1a84f308ddb772437ed2795/todoApp", todoDetails)
             .then((res) => {
                 todoDetails._id = res.data._id;
                 displayTodoPending(todoDetails);
@@ -91,7 +91,7 @@ function delTodo(e) {
             let li = e.target.parentElement;
             let key = li.getAttribute("value");
             axios
-                .delete(`https://crudcrud.com/api/061cb24afc7a46f5890b32a6f353aa7b/todoApp/${key}`)
+                .delete(`https://crudcrud.com/api/122a27efa1a84f308ddb772437ed2795/todoApp/${key}`)
                 .then((res) => {
                     console.log(res);
                     ulPending.removeChild(li);
@@ -106,9 +106,9 @@ function displayCompletedTodo(e) {
     if (e.target.classList.contains("btn-outline-primary")) {
         let li = e.target.parentElement;
         let key = li.getAttribute("value");
-
+        /*
         axios
-            .patch(`https://crudcrud.com/api/061cb24afc7a46f5890b32a6f353aa7b/todoApp/${key}`, { Status: true })
+            .patch(`https://crudcrud.com/api/122a27efa1a84f308ddb772437ed2795/todoApp/${key}`, { Status: true })
             .then((res) => {
                 const completedLi = document.createElement("li");
                 completedLi.className = "list-group-item";
@@ -117,6 +117,32 @@ function displayCompletedTodo(e) {
                 ulDone.appendChild(completedLi);
                 ulPending.removeChild(li);
             })
+            .catch((err) => {
+                console.log(err);
+                console.log(key);
+            });
+        */
+        axios
+            .get(`https://crudcrud.com/api/122a27efa1a84f308ddb772437ed2795/todoApp/${key}`)
+            .then((res) => {
+                let todo = res.data.Todo;
+                let desc = res.data.Desc;
+                axios
+                    .put(`https://crudcrud.com/api/122a27efa1a84f308ddb772437ed2795/todoApp/${key}`, {
+                        Todo: todo,
+                        Desc: desc,
+                        Status: true
+                    })
+                    .then((x) => {
+                        const completedLi = document.createElement("li");
+                        completedLi.className = "list-group-item";
+                        completedLi.setAttribute("value", x.data._id);
+                        completedLi.appendChild(document.createTextNode(li.innerText));
+                        ulDone.appendChild(completedLi);
+                        ulPending.removeChild(li);
+                    })
+                    .catch((y) => console.log(y));
+            })
             .catch((err) => console.log(err));
     }
 }
@@ -124,8 +150,9 @@ function displayCompletedTodo(e) {
 // Function to get stored Data
 function getStoredData() {
     axios
-        .get("https://crudcrud.com/api/061cb24afc7a46f5890b32a6f353aa7b/todoApp")
+        .get("https://crudcrud.com/api/122a27efa1a84f308ddb772437ed2795/todoApp")
         .then((res) => {
+            console.log(res);
             for (let i = 0; i < res.data.length; i++) {
                 if (res.data[i].Status) {
                     displayFromData(res.data[i]);
