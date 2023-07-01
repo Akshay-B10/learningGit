@@ -1,10 +1,12 @@
-const containerDiv = document.querySelector(".container");
-// var pendingCount = 0;
-// var doneCount = 0;
+var baseUrl = "https://crudcrud.com/api/ad8e6d1a9c6542bd80cfa813b745717a";
+var pendingCount = 0;
+var doneCount = 0;
+const containerDiv = document.querySelector(".container"); 
 
 const pendingHead = document.createElement("h3");
 pendingHead.style.color = "red";
 pendingHead.innerText = "Pending ToDo";
+pendingHead.style.display = "none";
 containerDiv.appendChild(pendingHead);
 
 const ulPending = document.createElement("ul");
@@ -14,6 +16,7 @@ containerDiv.appendChild(ulPending);
 const completedHead = document.createElement("h3");
 completedHead.style.color = "darkgreen";
 completedHead.innerText = "Completed ToDo";
+completedHead.style.display = "none";
 containerDiv.appendChild(completedHead);
 
 const ulDone = document.createElement("ul");
@@ -34,27 +37,27 @@ ulPending.addEventListener("click", delTodo);
 // Add todo in Done list
 ulPending.addEventListener("click", displayCompletedTodo);
 
-function addTodo(e) {
-    e.preventDefault();
-    const todo = document.querySelector("#todo");
-    const desc = document.querySelector("#desc");
-    if (todo.value == "" || desc.value == "") {
-        alert("Please fill required details");
-    } else {
-        const todoDetails = {};
-        todoDetails.Todo = todo.value;
-        todoDetails.Desc = desc.value;
-        todoDetails.Status = false;
-        // displayTodoPending(todoDetails);
-        axios
-            .post("https://crudcrud.com/api/122a27efa1a84f308ddb772437ed2795/todoApp", todoDetails)
-            .then((res) => {
-                todoDetails._id = res.data._id;
-                displayTodoPending(todoDetails);
-            })
-            .catch((err) => console.log(err));
-    }
+async function addTodo(e) {
+    try {
+        e.preventDefault();
+        const todo = document.querySelector("#todo");
+        const desc = document.querySelector("#desc");
+        if (todo.value == "" || desc.value == "") {
+            alert("Please fill required details");
+        } else {
+            const todoDetails = {};
+            todoDetails.Todo = todo.value;
+            todoDetails.Desc = desc.value;
+            todoDetails.Status = false;
+            // displayTodoPending(todoDetails);
+            const res = await axios.post(`${baseUrl}/todoApp`, todoDetails);
+            todoDetails._id = res.data._id;
+            displayTodoPending(todoDetails);
+        }
 
+    } catch (err) {
+        console.log(err);
+    }
 }
 
 // Function to Display Details
@@ -81,87 +84,85 @@ function displayTodoPending(todoDetails) {
     delBtn.setAttribute("value", "Delete");
     delBtn.className = "btn btn-danger";
     li.appendChild(delBtn);
+    if (pendingCount == 0) {
+        pendingHead.style.display = "inline-block";
+        pendingCount++;
+    }
     ulPending.appendChild(li);
 }
 
 // Function to delete details
-function delTodo(e) {
-    if (e.target.classList.contains('btn-danger')) {
-        if (confirm('Are You Sure?')) {
-            let li = e.target.parentElement;
-            let key = li.getAttribute("value");
-            axios
-                .delete(`https://crudcrud.com/api/122a27efa1a84f308ddb772437ed2795/todoApp/${key}`)
-                .then((res) => {
-                    console.log(res);
-                    ulPending.removeChild(li);
-                })
-                .catch((err) => console.log(err));
+async function delTodo(e) {
+    try {
+        if (e.target.classList.contains('btn-danger')) {
+            if (confirm('Are You Sure?')) {
+                let li = e.target.parentElement;
+                let key = li.getAttribute("value");
+                let res = await axios.delete(`${baseUrl}/todoApp/${key}`);
+                console.log(res);
+                pendingCount--;
+                if (pendingCount == 0) {
+                    pendingHead.style.display = "none";
+                }
+                ulPending.removeChild(li);
+            }
         }
+    } catch (err) {
+        console.log(err);
     }
 }
 
 // Function to add todo in done list
-function displayCompletedTodo(e) {
-    if (e.target.classList.contains("btn-outline-primary")) {
-        let li = e.target.parentElement;
-        let key = li.getAttribute("value");
-        /*
-        axios
-            .patch(`https://crudcrud.com/api/122a27efa1a84f308ddb772437ed2795/todoApp/${key}`, { Status: true })
-            .then((res) => {
-                const completedLi = document.createElement("li");
-                completedLi.className = "list-group-item";
-                completedLi.setAttribute("value", res.data._id);
-                completedLi.appendChild(document.createTextNode(li.innerText));
-                ulDone.appendChild(completedLi);
-                ulPending.removeChild(li);
-            })
-            .catch((err) => {
-                console.log(err);
-                console.log(key);
+async function displayCompletedTodo(e) {
+    try {
+        if (e.target.classList.contains("btn-outline-primary")) {
+            let li = e.target.parentElement;
+            let key = li.getAttribute("value");
+            let res = await axios.get(`${baseUrl}/todoApp/${key}`);
+            let todo = res.data.Todo;
+            let desc = res.data.Desc;
+            let x = await axios.put(`${baseUrl}/todoApp/${key}`, {
+                Todo: todo,
+                Desc: desc,
+                Status: true
             });
-        */
-        axios
-            .get(`https://crudcrud.com/api/122a27efa1a84f308ddb772437ed2795/todoApp/${key}`)
-            .then((res) => {
-                let todo = res.data.Todo;
-                let desc = res.data.Desc;
-                axios
-                    .put(`https://crudcrud.com/api/122a27efa1a84f308ddb772437ed2795/todoApp/${key}`, {
-                        Todo: todo,
-                        Desc: desc,
-                        Status: true
-                    })
-                    .then((x) => {
-                        const completedLi = document.createElement("li");
-                        completedLi.className = "list-group-item";
-                        completedLi.setAttribute("value", x.data._id);
-                        completedLi.appendChild(document.createTextNode(li.innerText));
-                        ulDone.appendChild(completedLi);
-                        ulPending.removeChild(li);
-                    })
-                    .catch((y) => console.log(y));
-            })
-            .catch((err) => console.log(err));
+            const completedLi = document.createElement("li");
+            completedLi.className = "list-group-item";
+            completedLi.setAttribute("value", x.data._id);
+            completedLi.appendChild(document.createTextNode(li.innerText));
+            pendingCount--;
+            if (doneCount == 0) {
+                completedHead.style.display = "block";
+            }
+            doneCount++;
+            ulDone.appendChild(completedLi);
+            if (pendingCount == 0) {
+                pendingHead.style.display = "none";
+            }
+            ulPending.removeChild(li);
+
+        }
+    } catch (err) {
+        console.log(err);
     }
 }
 
 // Function to get stored Data
-function getStoredData() {
-    axios
-        .get("https://crudcrud.com/api/122a27efa1a84f308ddb772437ed2795/todoApp")
-        .then((res) => {
-            console.log(res);
-            for (let i = 0; i < res.data.length; i++) {
-                if (res.data[i].Status) {
-                    displayFromData(res.data[i]);
-                } else {
-                    displayTodoPending(res.data[i]);
-                }
+async function getStoredData() {
+    try {
+        let res = await axios.get(`${baseUrl}/todoApp`);
+        console.log(res);
+        for (let i = 0; i < res.data.length; i++) {
+            if (res.data[i].Status) {
+                displayFromData(res.data[i]);
+            } else {
+                displayTodoPending(res.data[i]);
             }
-        })
-        .catch((err) => console.log(err));
+        }
+    } catch (err) {
+        console.log(err);
+    }
+    
 }
 
 function displayFromData(todoDetails) {
@@ -169,5 +170,9 @@ function displayFromData(todoDetails) {
     completedLi.className = "list-group-item";
     completedLi.setAttribute("value", todoDetails._id);
     completedLi.appendChild(document.createTextNode(`Todo: ${todoDetails.Todo}; Desc: ${todoDetails.Desc}`));
+    if (doneCount == 0) {
+        completedHead.style.display = "block";
+    }
+    doneCount++;
     ulDone.appendChild(completedLi);
 }
