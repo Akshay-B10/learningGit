@@ -16,11 +16,6 @@ app.use(adminRoutes);
 
 app.use(shopRoutes);
 
-/*
-app.use((req, res, next) => {
-    res.status(404).sendFile(path.join(__dirname, "views", "page-not-found.html"));
-});
-*/
 app.use(adminController.errorPage); // Use of controller to get html page
 
 app.listen(4000);

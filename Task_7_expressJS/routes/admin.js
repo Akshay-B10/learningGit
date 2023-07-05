@@ -3,7 +3,8 @@ const path = require("path");
 const express = require("express");
 
 const rootDir = require("../util/path");
-const adminController = require("../controllers/admin");
+const adminController = require("../controllers/admin"); // importing controller
+const Product = require("../models/product");
 
 const router = express.Router();
 
@@ -12,7 +13,8 @@ router.get("/add-product", (req, res, next) => {
 });
 
 router.post("/add-product", (req, res, next) => {
-    console.log(req.body);
+    const product = new Product(req.body.title, req.body.size);
+    product.save();
     res.redirect("/");
 });
 
