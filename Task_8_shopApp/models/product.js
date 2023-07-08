@@ -1,8 +1,8 @@
 const fs = require('fs');
 const path = require('path');
-
+const { mainModule } = require('process');
 const p = path.join(
-  path.dirname(process.mainModule.filename),
+  path.dirname(require.main.filename),
   'data',
   'products.json'
 );
