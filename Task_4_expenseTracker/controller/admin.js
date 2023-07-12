@@ -21,6 +21,15 @@ exports.addExpense = (req, res) => {
         .catch((err) => console.log(err));
 };
 
+exports.getAllExpenses = (req, res) => {
+    Expense
+    .findAll()
+    .then((data) => {
+        res.json(data);
+    })
+    .catch((err) => console.log(err));
+};
+
 exports.delExpense = (req, res) => {
     id = req.query.id;
     Expense

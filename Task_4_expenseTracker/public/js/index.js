@@ -14,7 +14,22 @@ ul.addEventListener("click", delExpense);
 // Edit of expense
 ul.addEventListener("click", editExpense);
 
-//Function to display data using DOM
+window.addEventListener("DOMContentLoaded", getAllExpenses);
+
+// Function to get all data
+function getAllExpenses() {
+    axios
+        .get("http://localhost:4000/get-all-expenses")
+        .then((res) => {
+            const expenses = res.data;
+            for (let i = 0; i < expenses.length; i++) {
+                displayExpense(expenses[i]);
+            };
+        })
+        .catch((err) => console.log(err));
+}
+
+// Function to display data using DOM
 function displayExpense(expense) {
     // Displaying users
     const li = document.createElement("li");
@@ -85,12 +100,16 @@ function delExpense(e) {
 function editExpense(e) {
     if (e.target.classList.contains("btn-outline-primary")) {
         let li = e.target.parentElement;
-        let key = li.getAttribute("value");
-        let expDetails = JSON.parse(localStorage.getItem(key));
-        document.querySelector("#expAmt").value = expDetails.Amount;
-        document.querySelector("#desc").value = expDetails.Desc;
-        document.querySelector("#category").value = expDetails.Category;
-        localStorage.removeItem(key);
-        li.parentElement.removeChild(li);
+        let id = li.getAttribute("value");
+        // Remove data from server
+        axios
+            .get(`http://localhost:4000/edit-expense?id=${id}`)
+            .then((res) => {
+                document.querySelector("#expAmt").value = res.data.amount;
+                document.querySelector("#desc").value = res.data.description;
+                document.querySelector("#category").value = res.data.category;
+                li.parentElement.removeChild(li);
+            })
+            .catch((err) => console.log(err));
     }
-}
+};
