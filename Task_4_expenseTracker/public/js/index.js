@@ -14,64 +14,76 @@ ul.addEventListener("click", delExpense);
 // Edit of expense
 ul.addEventListener("click", editExpense);
 
+//Function to display data using DOM
+function displayExpense(expense) {
+    // Displaying users
+    const li = document.createElement("li");
+    li.className = "list-group-item";
+
+    // to access id
+    li.setAttribute("value", expense.id);
+    li.appendChild(document.createTextNode(`${expense.amount} - ${expense.description} - ${expense.category}`));
+
+    // Add Edit button
+    const editBtn = document.createElement("input");
+    editBtn.setAttribute("type", "button");
+    editBtn.setAttribute("value", "Edit");
+    editBtn.className = "btn btn-outline-primary mx-2";
+    li.appendChild(editBtn);
+
+    // Add Delete button
+    const delBtn = document.createElement("input");
+    delBtn.setAttribute("type", "button");
+    delBtn.setAttribute("value", "Delete");
+    delBtn.className = "btn btn-danger";
+    li.appendChild(delBtn);
+    ul.appendChild(li);
+}
+
 // Funtion to add expense
-function addExpense(e){
+function addExpense(e) {
     e.preventDefault()
     const expAmt = document.querySelector("#expAmt");
     const desc = document.querySelector("#desc");
     const category = document.querySelector("#category");
     if (expAmt.value == "" || desc.value == "" || category.value == "") {
         alert("Please fill required details");
-    } else
-    {
-        // Storing Data in local storage
-        const userDetails = {};
-        userDetails.Amount = expAmt.value;
-        userDetails.Desc = desc.value;
-        userDetails.Category = category.value;
-        localStorage.setItem(srNo, JSON.stringify(userDetails));
-
-        // Displaying users
-        const li = document.createElement("li");
-        li.className = "list-group-item";
-
-        // to access local storage using key
-        li.setAttribute("value", srNo);
-        li.appendChild(document.createTextNode(`${expAmt.value} - ${desc.value} - ${category.value}`));
-
-        // Add Edit button
-        const editBtn = document.createElement("input");
-        editBtn.setAttribute("type", "button");
-        editBtn.setAttribute("value", "Edit");
-        editBtn.className = "btn btn-outline-primary mx-2";
-        li.appendChild(editBtn);
-
-        // Add Delete button
-        const delBtn = document.createElement("input");
-        delBtn.setAttribute("type", "button");
-        delBtn.setAttribute("value", "Delete");
-        delBtn.className = "btn btn-danger";
-        li.appendChild(delBtn);
-        ul.appendChild(li);
-        srNo++;
+    } else {
+        // Data storage in mysql server
+        const expense = {};
+        expense.amount = expAmt.value;
+        expense.desc = desc.value;
+        expense.category = category.value;
+        axios
+            .post("http://localhost:4000/add-expense", expense)
+            .then((res) => {
+                displayExpense(res.data);
+            })
+            .catch((err) => console.log(err));
     }
-}
+};
 
 // Function to delete expense
-function delExpense(e){
+function delExpense(e) {
     if (e.target.classList.contains('btn-danger')) {
         if (confirm('Are You Sure?')) {
             let li = e.target.parentElement;
-            let key = li.getAttribute("value");
-            localStorage.removeItem(key);
-            ul.removeChild(li);
-        }
+            let id = li.getAttribute("value");
+            // Remove data from server
+            axios
+                .get(`http://localhost:4000/delete-expense?id=${id}`)
+                .then(() => {
+                    console.log("Expense Deleted");
+                    ul.removeChild(li);
+                })
+                .catch((err) => console.log(err));
+        };
     }
-}
+};
 
 // Function to edit expense
-function editExpense(e){
-    if (e.target.classList.contains("btn-outline-primary")){
+function editExpense(e) {
+    if (e.target.classList.contains("btn-outline-primary")) {
         let li = e.target.parentElement;
         let key = li.getAttribute("value");
         let expDetails = JSON.parse(localStorage.getItem(key));
