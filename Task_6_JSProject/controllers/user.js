@@ -9,8 +9,8 @@ exports.getIndex = (req, res) => {
 }
 
 exports.addTodo = (req, res) => {
-    Todo.
-        create({
+    Todo
+        .create({
             name: req.body.name,
             description: req.body.description
         })
@@ -43,7 +43,7 @@ exports.todoCompleted = (req, res) => {
 };
 
 exports.delTodo = (req, res) => {
-    id = req.query.id;
+    const id = req.query.id;
     Todo
         .findByPk(id)
         .then((todo) => {
