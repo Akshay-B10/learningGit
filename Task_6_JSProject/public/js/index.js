@@ -85,8 +85,8 @@ function displayTodoPending(todoDetails) {
     li.appendChild(delBtn);
     if (pendingCount == 0) {
         pendingHead.style.display = "inline-block";
-        pendingCount++;
     }
+    pendingCount++;
     ulPending.appendChild(li);
 }
 
