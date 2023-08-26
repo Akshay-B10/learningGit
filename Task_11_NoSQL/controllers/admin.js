@@ -8,11 +8,17 @@ exports.getAddProduct = (req, res, next) => {
   });
 };
 
-exports.postAddProduct = (req, res, next) => {
+exports.postAddProduct = async (req, res, next) => {
   const title = req.body.title;
-  const imageUrl = req.body.imageUrl;
   const price = req.body.price;
+  const imageUrl = req.body.imageUrl;
   const description = req.body.description;
+
+  const product = new Product(title, price, imageUrl, description);
+  await product.save();
+  console.log('Created Product');
+  res.redirect('/admin/products');
+  /*
   req.user
     .createProduct({
       title: title,
@@ -28,8 +34,10 @@ exports.postAddProduct = (req, res, next) => {
     .catch(err => {
       console.log(err);
     });
+  */
 };
 
+/*
 exports.getEditProduct = (req, res, next) => {
   const editMode = req.query.edit;
   if (!editMode) {
@@ -100,3 +108,4 @@ exports.postDeleteProduct = (req, res, next) => {
     })
     .catch(err => console.log(err));
 };
+*/
