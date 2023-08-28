@@ -1,5 +1,3 @@
-const { ObjectId } = require('mongodb');
-
 const Product = require('../models/product');
 
 exports.getAddProduct = (req, res, next) => {
@@ -16,7 +14,7 @@ exports.postAddProduct = async (req, res, next) => {
   const imageUrl = req.body.imageUrl;
   const description = req.body.description;
 
-  const product = new Product(title, price, imageUrl, description);
+  const product = new Product(title, price, imageUrl, description, null, req.user._id);
   await product.save();
   res.redirect('/admin/products');
 };
@@ -60,7 +58,7 @@ exports.postEditProduct = (req, res, next) => {
   const price = req.body.price;
   const imageUrl = req.body.imageUrl;
   const desc = req.body.description;
-  const product = new Product(title, price, imageUrl, desc, new ObjectId(prodId));
+  const product = new Product(title, price, imageUrl, desc, prodId);
   product
     .save()
     .then(result => {

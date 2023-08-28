@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 require("dotenv").config();
 
 const db = require("./util/database");
+const User = require("./models/user");
 
 const errorController = require('./controllers/error');
 
@@ -21,14 +22,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// app.use((req, res, next) => {
-//   User.findById(1)
-//     .then(user => {
-//       req.user = user;
-//       next();
-//     })
-//     .catch(err => console.log(err));
-// });
+app.use((req, res, next) => {
+  User.findById("64eb971e28196ca6634d127d")
+    .then(user => {
+      req.user = new User(user.name, user.email, user.password, user.cart, user._id);
+      next();
+    })
+    .catch(err => console.log(err));
+});
 
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);

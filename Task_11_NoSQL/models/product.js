@@ -3,12 +3,13 @@ const { ObjectId } = require("mongodb");
 const getDb = require("../util/database").getDb;
 
 class Product {
-  constructor(title, price, imageUrl, description, id) {
+  constructor(title, price, imageUrl, description, id, userId) {
     this.title = title;
     this.price = price;
     this.imageUrl = imageUrl;
     this.description = description;
-    this._id = id;
+    this._id = id? new ObjectId(id): null;
+    this.userId = userId;
   };
 
   async save() {
@@ -18,7 +19,7 @@ class Product {
       if (this._id) {
         // Edit
         dbOp = await db.collection("products").updateOne({
-          _id: new mongodb.ObjectId(this._id)
+          _id: this._id
         }, {
           $set: this
         });
