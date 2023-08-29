@@ -1,6 +1,6 @@
 const path = require("path");
 
-const User = require("../models/user");
+// const User = require("../models/user");
 
 exports.signUp = (req, res) => {
     res.sendFile(path.join(__dirname, "../", "views", "signup.html"));
