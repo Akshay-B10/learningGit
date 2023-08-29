@@ -24,6 +24,21 @@ class User {
       })
   }
 
+  static findById(id) {
+    const db = getDb();
+    return db
+      .collection("users").find({
+        _id: new ObjectId(id)
+      })
+      .next()
+      .then(user => {
+        return user
+      })
+      .catch((err) => {
+        throw (err);
+      })
+  }
+
   addToCart(product) {
     const productIndex = this.cart.items.findIndex(cp => {
       return cp.productId.toString() == product._id.toString();
@@ -98,20 +113,42 @@ class User {
       })
   }
 
-  static findById(id) {
+  createOrder() {
     const db = getDb();
-    return db
-      .collection("users").find({
-        _id: new ObjectId(id)
+    return this
+      .getCartProducts()
+      .then((cartProducts) => {
+        return db
+          .collection("orders")
+          .insertOne({
+            items: cartProducts,
+            userId: new ObjectId(this._id)
+          })
       })
-      .next()
-      .then(user => {
-        return user
+      .then(res => {
+        return db
+          .collection("users")
+          .updateOne({
+            _id: new ObjectId(this._id)
+          }, {
+            $set: { cart: { items: [] } }
+          })
       })
-      .catch((err) => {
-        throw (err);
+      .catch(err => {
+        throw (err)
       })
   }
+
+  getOrders() {
+    const db = getDb();
+    return db
+      .collection("orders")
+      .find({
+        userId: new ObjectId(this._id)
+      })
+      .toArray()
+  }
+
 }
 
 module.exports = User;
