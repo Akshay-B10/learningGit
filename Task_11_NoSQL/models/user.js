@@ -52,6 +52,52 @@ class User {
       });
   };
 
+  getCartProducts() {
+    const db = getDb();
+    let productMap = new Set();
+    const idList = this.cart.items.map(item => {
+      productMap[item.productId] = item.quantity;
+      return item.productId;
+    });
+    return db
+      .collection("products").find({
+        _id: {
+          $in: idList
+        }
+      })
+      .toArray()
+      .then(products => {
+        return products.map(product => {
+          return {
+            ...product,
+            quantity: productMap[product._id]
+          }
+        })
+      })
+      .catch(err => {
+        console.log(err);
+        throw (err)
+      });
+  };
+
+  deleteCartProduct(id) {
+    const cartItems = this.cart.items.filter(item => {
+      return item.productId.toString() !== id;
+    });
+    const db = getDb();
+    return db
+      .collection("users")
+      .updateOne({
+        _id: new ObjectId(this._id)
+      }, {
+        $set: {
+          cart: {
+            items: cartItems
+          }
+        }
+      })
+  }
+
   static findById(id) {
     const db = getDb();
     return db
