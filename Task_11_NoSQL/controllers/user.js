@@ -1,6 +1,6 @@
 const path = require("path");
 
-// const User = require("../models/user");
+const User = require("../models/user");
 
 exports.signUp = (req, res) => {
     res.sendFile(path.join(__dirname, "../", "views", "signup.html"));
@@ -11,11 +11,17 @@ exports.addUser = (req, res) => {
     if (password == "") {
         throw ("Please fill required details");
     }
-    const user = new User(name, email, password);
+    const user = new User({
+        name: name,
+        email: email,
+        password: password,
+        cart: {
+            items: []
+        }
+    });
     user
         .save()
-        .then((user) => {
-            User.findById(user.insertedId);
+        .then(user => {
             res.json({
                 message: "User created successfully!"
             })
