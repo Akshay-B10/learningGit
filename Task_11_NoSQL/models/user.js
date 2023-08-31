@@ -17,11 +17,31 @@ const user = new Schema({
     },
     cart: {
         items: [{
-            productId: { type: Schema.Types.ObjectId, required: true, ref: "Product"},
+            productId: { type: Schema.Types.ObjectId, required: true, ref: "Product" },
             quantity: { type: Number, required: true }
         }]
     }
 });
+
+user.methods.addToCart = function (product) {
+    const productIndex = this.cart.items.findIndex(cp => {
+        return cp.productId.toString() == product._id.toString();
+    });
+    let newCartItems = [...this.cart.items];
+    if (productIndex >= 0) {
+        newCartItems[productIndex].quantity = newCartItems[productIndex].quantity + 1;
+    } else {
+        newCartItems.push({
+            productId: product._id,
+            quantity: 1
+        });
+    }
+    const newCart = {
+        items: newCartItems
+    };
+    this.cart = newCart;
+    return this.save();
+};
 
 module.exports = mongoose.model("User", user);
 
