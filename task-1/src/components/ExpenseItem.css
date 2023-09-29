@@ -1,0 +1,25 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.expense-item {
+    padding: 10px;
+    display: flex;
+    background-color: rgb(200, 150, 50);
+    border-radius: 10px;
+    justify-content: space-between;
+}
+
+.expense-date {
+    display: inline-block;
+}
+.expense-amount {
+    display: inline-block;
+}
+.expense-description {
+    display: inline-block;
+}
+.expense-location {
+    display: inline-block;
+}
