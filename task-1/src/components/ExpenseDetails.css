@@ -1,0 +1,11 @@
+.expense-amount {
+    display: inline-block;
+}
+
+.expense-description {
+    display: inline-block;
+}
+
+.expense-location {
+    display: inline-block;
+}
