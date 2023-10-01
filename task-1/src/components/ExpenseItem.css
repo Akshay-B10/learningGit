@@ -4,6 +4,7 @@
 }
 
 .expense-item {
+    margin: 3px;
     padding: 10px;
     display: flex;
     background-color: rgb(200, 150, 50);
