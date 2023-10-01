@@ -1,6 +1,6 @@
-import ExpenseItem from "./components/ExpenseItem";
+import ExpenseItem from "./components/Expense/ExpenseItem";
 
-function App() {
+const App = () => {
   const expenses = [{
     date: new Date(2023, 8, 29),
     amount: 100,
