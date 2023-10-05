@@ -1,4 +1,6 @@
+import Card from "./components/Expense/Card";
 import ExpenseItem from "./components/Expense/ExpenseItem";
+import "./App.css";
 
 const App = () => {
   const expenses = [{
@@ -14,9 +16,19 @@ const App = () => {
   }]
   return (
     <div>
-      <h2>Expense Tracker</h2>
-      <ExpenseItem date={expenses[0].date} amount={expenses[0].amount} description={expenses[0].description} location={expenses[0].location}></ExpenseItem>
-      <ExpenseItem date={expenses[1].date} amount={expenses[1].amount} description={expenses[1].description} location={expenses[1].location}></ExpenseItem>
+      {/* <h2>Expense Tracker</h2> */}
+      <Card className = "expenses">
+        <ExpenseItem
+          date={expenses[0].date}
+          amount={expenses[0].amount}
+          description={expenses[0].description}
+          location={expenses[0].location} />
+        <ExpenseItem
+          date={expenses[1].date}
+          amount={expenses[1].amount}
+          description={expenses[1].description}
+          location={expenses[1].location} />
+      </Card>
     </div>
   );
 }

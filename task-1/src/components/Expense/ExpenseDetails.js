@@ -5,12 +5,12 @@ const ExpenseDetails = props => {
     const description = props.description;
     const location = props.location;
     return (
-        <>
+        <div className="expense-details">
             <div className="expense-amount">&#8377; {amount}</div>
             <div className="expense-description">{description}</div>
             <div className="expense-location">{location}</div>
-        </>
-    )
+        </div>
+    );
 };
 
 export default ExpenseDetails;
