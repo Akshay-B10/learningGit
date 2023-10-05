@@ -1,11 +1,11 @@
-import Card from "./components/Expense/Card";
+import Card from "./components/UI/Card";
 import ExpenseItem from "./components/Expense/ExpenseItem";
 import "./App.css";
 
 const App = () => {
   const expenses = [{
     date: new Date(2023, 8, 29),
-    amount: 100,
+    amount: 150,
     description: "Food",
     location: "McD, XYZ City"
   }, {
