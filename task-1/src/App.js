@@ -1,5 +1,6 @@
 import Card from "./components/UI/Card";
 import ExpenseItem from "./components/Expense/ExpenseItem";
+import ExpenseForm from "./components/ExpenseForm";
 import "./App.css";
 
 const App = () => {
@@ -17,6 +18,7 @@ const App = () => {
   return (
     <div>
       {/* <h2>Expense Tracker</h2> */}
+      <ExpenseForm />
       <Card className = "expenses">
         <ExpenseItem
           date={expenses[0].date}
