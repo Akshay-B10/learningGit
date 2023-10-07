@@ -1,41 +1,44 @@
-import React from "react";
+import React, { useState } from "react";
 
 function ExpenseForm() {
-    let date = "";
-    let desc = "";
-    let amt = "";
-    const changeHandler = () => {
-        const newDate = document.getElementById("date").value;
-        const newDesc = document.getElementById("desc").value;
-        const newAmt = document.getElementById("amt").value;
-        if (date !== newDate) {
-            console.log(newDate);
-        } else if (desc !== newDesc) {
-            console.log(newDesc);
-        } else if (amt !== newAmt) {
-            console.log(newAmt);
-        };
-        date = newDate;
-        desc = newDesc;
-        amt = newAmt;
+    const [date, setDate] = useState("");
+    const [description, setDescription] = useState("");
+    const [amount, setAmount] = useState("");
+
+    console.log(date);
+    console.log(description);
+    console.log(amount);
+
+    const dateChangeHandler = event => {
+        setDate(event.target.value);
+    }
+
+    const descriptionChangeHandler = event => {
+        setDescription(event.target.value);
+    }
+
+    const amountChangeHandler = event => {
+        setAmount(event.target.value);
     }
 
     return (
-        <div onChange={changeHandler}>
+        <form>
             <div>
-                <label>Enter Date</label>
-                <input id="date" type="date" />
+                <div onChange={dateChangeHandler}>
+                    <label>Enter Date</label>
+                    <input type="date" />
+                </div>
+                <div onChange={descriptionChangeHandler}>
+                    <label>Enter Description</label>
+                    <input type="text" />
+                </div>
+                <div onChange={amountChangeHandler}>
+                    <label>Enter Amount</label>
+                    <input type="text" />
+                </div>
+                <button type="submit">Add Expense</button>
             </div>
-            <div>
-                <label>Enter Description</label>
-                <input id="desc" type="text" />
-            </div>
-            <div>
-                <label>Enter Amount</label>
-                <input id="amt" type="text" />
-            </div>
-            <button type="button">Add Expense</button>
-        </div>
+        </form>
     );
 }
 
