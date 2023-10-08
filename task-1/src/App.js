@@ -5,13 +5,13 @@ import Expenses from './components/Expenses/Expenses';
 
 const DUMMY_DATA = [{
   id: Math.random().toString(),
-  date: new Date(2023, 8, 29),
+  date: new Date(2022, 8, 29),
   amount: 150,
   title: "Food",
   location: "McD, XYZ City"
 }, {
   id: Math.random().toString(),
-  date: new Date(2023, 9, 1),
+  date: new Date(2021, 9, 1),
   amount: 400,
   title: "Clothing",
   location: "Maxx, Mall"
