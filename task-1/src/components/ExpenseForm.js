@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function ExpenseForm() {
+function ExpenseForm(props) {
     const [date, setDate] = useState("");
     const [description, setDescription] = useState("");
     const [amount, setAmount] = useState("");
@@ -24,23 +24,26 @@ function ExpenseForm() {
             description: description,
             amount: amount
         }
-        console.log(newExpenseData);
+        props.onAddExpense(newExpenseData);
+        setDate("");
+        setDescription("");
+        setAmount("");
     }
 
     return (
         <form onSubmit={submitHandler}>
             <div>
-                <div onChange={dateChangeHandler}>
+                <div>
                     <label>Enter Date</label>
-                    <input type="date" />
+                    <input type="date" value={date} onChange={dateChangeHandler}/>
                 </div>
-                <div onChange={descriptionChangeHandler}>
+                <div>
                     <label>Enter Description</label>
-                    <input type="text" />
+                    <input type="text" value={description} onChange={descriptionChangeHandler}/>
                 </div>
-                <div onChange={amountChangeHandler}>
+                <div>
                     <label>Enter Amount</label>
-                    <input type="text" />
+                    <input type="text" value={amount} onChange={amountChangeHandler}/>
                 </div>
                 <button type="submit">Add Expense</button>
             </div>

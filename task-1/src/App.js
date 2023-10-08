@@ -15,11 +15,17 @@ const App = () => {
     description: "Clothing",
     location: "Maxx, Mall"
   }]
+
+  const addExpenseHandler = expenseData => {
+    console.log("in app");
+    console.log({ ...expenseData });
+  }
+
   return (
     <div>
       {/* <h2>Expense Tracker</h2> */}
-      <ExpenseForm />
-      <Card className = "expenses">
+      <ExpenseForm onAddExpense={addExpenseHandler} />
+      <Card className="expenses">
         <ExpenseItem
           date={expenses[0].date}
           amount={expenses[0].amount}
