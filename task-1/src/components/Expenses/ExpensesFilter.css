@@ -3,7 +3,7 @@
     padding: 0 1rem;
 }
 
-.dropdown-year {
+.expenses-filter__control {
     display: flex;
     width: 100%;
     align-items: center;
