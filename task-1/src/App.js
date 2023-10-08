@@ -1,7 +1,10 @@
+import React, { useState } from "react";
+
 import Card from "./components/UI/Card";
 import ExpenseItem from "./components/Expense/ExpenseItem";
 import ExpenseForm from "./components/ExpenseForm";
 import "./App.css";
+import ExpensesFilter from "./components/Expense/ExpensesFilter";
 
 const App = () => {
   const expenses = [{
@@ -14,11 +17,17 @@ const App = () => {
     amount: 400,
     description: "Clothing",
     location: "Maxx, Mall"
-  }]
+  }];
+
+  const [filterYear, setFilterYear] = useState("2021");
 
   const addExpenseHandler = expenseData => {
     console.log("in app");
     console.log({ ...expenseData });
+  }
+
+  const filterYearHandler = selectedYear => {
+    setFilterYear(selectedYear);
   }
 
   return (
@@ -26,6 +35,7 @@ const App = () => {
       {/* <h2>Expense Tracker</h2> */}
       <ExpenseForm onAddExpense={addExpenseHandler} />
       <Card className="expenses">
+        <ExpensesFilter selected={filterYear} onFilterYear={filterYearHandler} />
         <ExpenseItem
           date={expenses[0].date}
           amount={expenses[0].amount}
