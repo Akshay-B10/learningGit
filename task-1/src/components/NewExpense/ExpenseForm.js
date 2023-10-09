@@ -7,6 +7,22 @@ const ExpenseForm = (props) => {
   const [enteredAmount, setEnteredAmount] = useState('');
   const [enteredDate, setEnteredDate] = useState('');
 
+  const [flag, setFlag] = useState(false);
+
+  const expandHandler = event => {
+    setFlag(event.target.value);
+  }
+
+  if (!flag) {
+    return (
+      <form>
+        <div className='new-expense__actions'>
+          <button value={true} onClick={expandHandler}>Add new Expense</button>
+        </div>
+      </form>
+    )
+  }
+
   const titleChangeHandler = (event) => {
     setEnteredTitle(event.target.value);
   };
@@ -32,6 +48,7 @@ const ExpenseForm = (props) => {
     setEnteredTitle('');
     setEnteredAmount('');
     setEnteredDate('');
+    setFlag(false);
   };
 
   return (
@@ -60,13 +77,14 @@ const ExpenseForm = (props) => {
           <input
             type='date'
             min='2020-01-01'
-            max= '2023-10-08'
+            max='2023-10-08'
             value={enteredDate}
             onChange={dateChangeHandler}
           />
         </div>
       </div>
       <div className='new-expense__actions'>
+        <button value={false} onClick={expandHandler}>Cancel</button>
         <button type='submit'>Add Expense</button>
       </div>
     </form>
