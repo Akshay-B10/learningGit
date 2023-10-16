@@ -13,6 +13,7 @@ const UserList = props => {
                     key={user.id}
                     name={user.name}
                     age={user.age}
+                    college={user.college}
                 />)}
             </ul>
         </Card>

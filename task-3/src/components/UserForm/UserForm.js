@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 
 import Card from "../UI/Card";
 import "./UserForm.css"
@@ -6,6 +6,8 @@ import "./UserForm.css"
 const UserForm = props => {
     const [name, setName] = useState("");
     const [age, setAge] = useState("");
+
+    const collegeRef = useRef();
 
     const nameChangeHandler = event => {
         setName(event.target.value);
@@ -20,17 +22,23 @@ const UserForm = props => {
         props.addUser({
             id: Date.now().toString(),
             name: name,
-            age: age
+            age: age,
+            college: collegeRef.current.value
         });
+        setName("");
+        setAge("");
+        collegeRef.current.value = "";
     }
 
     return (
         <Card className="add_user__form">
             <form onSubmit={addUserHandler}>
                 <label>Username</label>
-                <input type="text" onChange={nameChangeHandler} />
+                <input type="text" value={name} onChange={nameChangeHandler} />
                 <label>Age (in Years)</label>
-                <input type="number" onChange={ageChangeHandler} />
+                <input type="number" value={age} onChange={ageChangeHandler} />
+                <label>College</label>
+                <input type="text" ref={collegeRef} />
                 <div>
                     <button type="submit" className="btn">Add User</button>
                 </div>

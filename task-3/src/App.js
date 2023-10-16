@@ -23,9 +23,10 @@ function App() {
     const user = {...userData};
     const newName = user.name;
     const newAge = +user.age;
-    if (newName.trim() === "" || user.age.trim() === "") {
+    const newCollege = user.college;
+    if (newName.trim() === "" || user.age.trim() === "" || newCollege.trim() === "") {
       setIsValid(false);
-      setAlertMessage("Please enter a valid name or age (non empty values)");
+      setAlertMessage("Please enter a valid name or age or college name (non empty values)");
       return;
     }
     if (!newAge || newAge <= 0) {
