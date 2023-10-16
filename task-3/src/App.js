@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import UserForm from "./components/UserForm/UserForm";
 import UserList from "./components/UserList/UserList";
 import Alert from "./components/Alert/Alert";
+import "./App.css";
 
 function App() {
   const [userList, setUserList] = useState([]);
@@ -10,11 +11,13 @@ function App() {
   const [isValid, setIsValid] = useState(true);
   const [alertMessage, setAlertMessage] = useState("");
 
-  if (!isValid) {
-    return (
-      <Alert message={alertMessage} getForm={setIsValid} />
-    );
-  }
+  // if (!isValid) {
+  //   return (
+  //     <div className="App">
+  //       <Alert message={alertMessage} getForm={setIsValid} />
+  //     </div>
+  //   );
+  // }
 
   const addUser = userData => {
     const user = {...userData};
@@ -35,7 +38,8 @@ function App() {
   }
 
   return (
-    <div>
+    <div className="App">
+      {!isValid && <Alert message={alertMessage} getForm={setIsValid} />}
       <UserForm addUser={addUser} />
       <UserList users={userList} />
     </div>

@@ -1,0 +1,11 @@
+.item {
+    font-weight: bold;
+    color: white;
+    padding: 6px 12px;
+    margin: 2px 0;
+    text-align: left;
+    background-color: rgb(200, 75, 220);
+    border: 2px rgb(90, 10, 100) solid;
+    border-radius: 6px;
+    list-style: none;
+}

@@ -1,5 +1,8 @@
 import React from "react";
 
+import Card from "../UI/Card";
+import "./Alert.css";
+
 const Alert = props => {
     const clickHandler = () => {
         props.getForm(true);
@@ -7,11 +10,18 @@ const Alert = props => {
 
     return (
         <div>
-            <div>
-                <h1>Invalid Input</h1>
-            </div>
-            <p>{props.message}</p><br />
-            <button type="button" onClick={clickHandler}>Cancel</button>
+            <div className="backdrop" />
+            <Card className="modal">
+                <header className="header">
+                    <h2>Invalid Input</h2>
+                </header>
+                <div className="content">
+                    <p>{props.message}</p>
+                </div>
+                <footer className="actions">
+                    <button type="button" className="modal_btn" onClick={clickHandler}>Cancel</button>
+                </footer>
+            </Card>
         </div>
     )
 };

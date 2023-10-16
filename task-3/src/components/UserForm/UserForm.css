@@ -1,0 +1,42 @@
+.add_user__form {
+    display: inline-block;
+    margin: 12px;
+    padding: 12px;
+    width: 50%;
+    border: 2px rgb(120, 120, 120) solid;
+    background-color: rgb(255, 180, 180);
+}
+
+.add_user__form label {
+    margin-bottom: 6px;
+    display: block;
+    text-align: left;
+    font-weight: bold;
+}
+
+.add_user__form input {
+    font: inherit;
+    margin-bottom: 12px;
+    padding: 4px 8px;
+    width: 20rem;
+    border: 2px rgb(200, 120, 120) solid;
+    border-radius: 8px;
+    display: block;
+    outline: none;
+}
+
+.btn {
+    color: rgb(90, 10, 100);
+    padding: 6px 8px;
+    background-color: rgb(230, 230, 255);
+    border: 2px rgb(90, 10, 100) solid;
+    border-radius: 8px;
+    float: left;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn:hover, .btn:active {
+    color: rgb(230, 230, 255);
+    background-color: rgb(90, 10, 100);
+}
